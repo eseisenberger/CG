@@ -6,10 +6,8 @@ public static class BitmapExtensions
 {
     public static byte[] GetPixels(this BitmapSource source)
     {
-        var width = source.PixelWidth;
         var height = source.PixelHeight;
-        var bpp = source.Format.BitsPerPixel / 8;
-        var stride = width * bpp;
+        var stride = source.Stride();
         var pixels = new byte[height * stride];
         source.CopyPixels(
             pixels: pixels, 

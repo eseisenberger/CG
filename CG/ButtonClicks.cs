@@ -8,6 +8,12 @@ public partial class MainWindow
         ApplyNewest();
     }
     
+    private void SharpenClick(object sender, RoutedEventArgs e)
+    {
+        Queue.Add(Sharpen);
+        ApplyNewest();
+    }
+    
     private void InverseClick(object sender, RoutedEventArgs e)
     {
         Queue.Add(Inversion);

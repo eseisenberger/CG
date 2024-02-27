@@ -19,6 +19,12 @@ namespace CG
         private const int Contrast = 20;
         private const double Gamma = 2.2;
         private const int Kernel = 3;
+        private static readonly int[,] SharpeningKernel =
+        {
+            { 0, -1, 0 },
+            { -1, 5, -1 },
+            { 0, -1, 0 }
+        };
         
         private byte[] GammaCorrectionTable { get; } = new byte[256];
         public List<Action<WriteableBitmap>> Queue { get; set; } = [];

@@ -64,11 +64,50 @@ public partial class MainWindow
             {
                 for (var nx = -bound; nx <= bound; nx++)
                 {
-                    var neighborIndex = (y + ny) * stride + (x + nx) * 4;
-                    sum += pixels[neighborIndex + channel];
+                    var sample = (y + ny) * stride + (x + nx) * 4;
+                    sum += pixels[sample + channel];
                 }
             }
             pixels[index + channel] = (byte)(sum / 9.0);
+        }
+    }
+
+    private void Sharpen(WriteableBitmap source)
+    {
+        const int kernel = 3;
+        const int bound = kernel / 2;
+        
+        var height = source.PixelHeight;
+        var width = source.PixelWidth;
+        var stride = source.Stride();
+        var pixels = source.GetPixels();
+        var original = source.GetPixels();
+        for (var y = bound; y < height - bound; y++)
+            for (var x = bound; x < width - bound; x++)
+                ApplySharpen(ref pixels, ref original, x, y, stride, kernel);
+        
+        source.WritePixels(pixels);
+    }
+
+    private static void ApplySharpen(ref byte[] pixels, ref byte[] original, int x, int y, int stride, int kernel)
+    {
+        var index = y * stride + x * 4;
+        var bound = kernel / 2;
+        
+        for (var channel = 0; channel < 3; channel++)
+        {
+            var sum = 0;
+            for (var ny = -bound; ny <= bound; ny++)
+            {
+                for (var nx = -bound; nx <= bound; nx++)
+                {
+                    var sample = (y + ny) * stride + (x + nx) * 4;
+                    sum += original[sample + channel] * SharpeningKernel[ny + 1, nx + 1];
+                }
+            }
+
+            sum = (byte)int.Clamp(sum, 0, 255);
+            pixels[index + channel] = (byte)sum;
         }
     }
 }
