@@ -18,3 +18,4 @@ C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\refint\CG.dll
 C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\CG.pdb
 C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\CG.genruntimeconfig.cache
 C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\ref\CG.dll
+C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\CG.sourcelink.json

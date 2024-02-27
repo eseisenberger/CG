@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Media.Imaging;
-using Microsoft.Win32;
+﻿global using System.ComponentModel;
+global using System.IO;
+global using System.Runtime.CompilerServices;
+global using System.Windows;
+global using System.Windows.Media.Imaging;
+global using Microsoft.Win32;
 
 namespace CG
 {
@@ -13,94 +13,63 @@ namespace CG
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private const string FileTypeFilter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg|All files (*.*)|*.*";
+        private const string DefaultImageSource = @"..\..\..\default.png";
 
-        private BitmapImage? _original;
-        public BitmapImage? Original
+        private const int Brightness = 20;
+        private const int Contrast = 20;
+        private const double Gamma = 2.2;
+        private const int Kernel = 3;
+        
+        private byte[] GammaCorrectionTable { get; } = new byte[256];
+        public List<Action<WriteableBitmap>> Queue { get; set; } = [];
+
+        private WriteableBitmap _original = null!;
+        public WriteableBitmap Original
         {
             get => _original;
             set => SetField(ref _original, value);
         }
         
-        private BitmapImage? _modified;
-        public BitmapImage? Modified
+        private WriteableBitmap _modified = null!;
+        public WriteableBitmap Modified
         {
             get => _modified;
             set => SetField(ref _modified, value);
         }
 
-
-        public MainWindow()
+        private void InitializeGammaTable()
         {
-            InitializeComponent();
-            DataContext = this;
-        }
-
-        private void OpenFile(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog dialog = new()
-            {
-                Filter = FileTypeFilter
-            };
-            
-            if (dialog.ShowDialog() != true)
-                return;
-            
-            var file = new Uri(dialog.FileName);
-            Original = Modified = new(file);
-
-        }
-
-        private void Error(string message)
-        {
-            MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            for (var i = 0; i < 256; i++)
+                GammaCorrectionTable[i] = (byte)(255 * Math.Pow(i / 255.0, 1.0 / Gamma));
         }
         
-        private void SaveFile(object sender, RoutedEventArgs e)
+        public MainWindow()
         {
-            if (Original is not BitmapSource image)
-                return;
-            
+            DataContext = this;
+            var source = new Uri(DefaultImageSource, UriKind.Relative);
+            var image = new BitmapImage(source);
+            Original = new WriteableBitmap(image);
+            Modified = new WriteableBitmap(image);
+            InitializeGammaTable();
+            InitializeComponent();
+        }
 
-            SaveFileDialog dialog = new()
+        private void ApplyNewest()
+        {
+            var effect = Queue.LastOrDefault();
+            effect?.Invoke(Modified);
+        }
+        
+        private void Refresh()
+        {
+            var image = new WriteableBitmap(Original);
+            foreach (var effect in Queue)
             {
-                Filter = "PNG Image|*.png",
-                FileName = "Image",
-                DefaultExt = ".png"
-            };
-            if (dialog.ShowDialog() == false)
-                return;
-
-            PngBitmapEncoder encoder = new();
-            encoder.Frames.Add(BitmapFrame.Create(image));
-            using var stream = File.Create(dialog.FileName);
-            encoder.Save(stream);
+                effect.Invoke(image);
+                Modified = image;
+            }
         }
-
-        private void BlurClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void InverseClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void BrightnessCorrectionClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ContrastEnhancementClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void GammaCorrectionClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)

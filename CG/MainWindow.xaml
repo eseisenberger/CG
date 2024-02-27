@@ -30,12 +30,12 @@
         </ToolBar>
         <Border Grid.Row="2" Grid.Column="1" BorderThickness="0.5" BorderBrush="LightGray">
             <ScrollViewer>
-                <Image Source="{Binding Path=Original, TargetNullValue=..\\..\\..\\default.png}" Stretch="None"/>
+                <Image Source="{Binding Path=Original}" Stretch="None"/>
             </ScrollViewer>
         </Border>
         <Border Grid.Row="2" Grid.Column="2" BorderThickness="0.5" BorderBrush="LightGray">
             <ScrollViewer>
-                <Image Source="{Binding Path=Modified, TargetNullValue=..\\..\\..\\default.png}" Stretch="None"/>
+                <Image Source="{Binding Path=Modified}" Stretch="None"/>
             </ScrollViewer>
         </Border>
     </Grid>
