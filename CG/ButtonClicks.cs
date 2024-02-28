@@ -2,39 +2,40 @@
 
 public partial class MainWindow
 {
+    private void ClickBase(string name, Action<WriteableBitmap> action)
+    {
+        var effect = new Effect(name, action);
+        Queue.Insert(0, effect);
+        ApplyNewest();
+    }
+    
     private void BlurClick(object sender, RoutedEventArgs e)
     {
-        Queue.Add(Blur);
-        ApplyNewest();
+        ClickBase("Blur", Blur);
     }
     
     private void SharpenClick(object sender, RoutedEventArgs e)
     {
-        Queue.Add(Sharpen);
-        ApplyNewest();
+        ClickBase("Sharpen", Sharpen);
     }
     
     private void InverseClick(object sender, RoutedEventArgs e)
     {
-        Queue.Add(Inversion);
-        ApplyNewest();
+        ClickBase("Invert", Inversion);
     }
 
     private void BrightnessCorrectionClick(object sender, RoutedEventArgs e)
     {
-        Queue.Add(BrightnessCorrection);
-        ApplyNewest();
+        ClickBase("Correct Brightness", BrightnessCorrection);
     }
 
     private void ContrastEnhancementClick(object sender, RoutedEventArgs e)
     {
-        Queue.Add(ContrastEnhancement);
-        ApplyNewest();
+        ClickBase("Enhance Contrast", ContrastEnhancement);
     }
 
     private void GammaCorrectionClick(object sender, RoutedEventArgs e)
     {
-        Queue.Add(GammaCorrection);
-        ApplyNewest();
+        ClickBase("Correct Gamma", GammaCorrection);
     }
 }

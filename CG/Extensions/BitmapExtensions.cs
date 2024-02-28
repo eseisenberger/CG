@@ -1,6 +1,4 @@
-﻿using System.Windows.Media.Imaging;
-
-namespace CG;
+﻿namespace CG.Extensions;
 
 public static class BitmapExtensions
 {

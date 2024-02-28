@@ -1,4 +1,6 @@
-﻿namespace CG;
+﻿using CG.Extensions;
+
+namespace CG;
 
 public partial class MainWindow
 {

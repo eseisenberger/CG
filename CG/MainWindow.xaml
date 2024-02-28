@@ -4,40 +4,97 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CG"
+        xmlns:converters="clr-namespace:CG.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+        <converters:EffectConverter x:Key="ActionConverter"/>
+        <converters:ScaleConverter x:Key="ScaleConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Menu Grid.ColumnSpan="3">
+        <Menu Grid.ColumnSpan="4">
             <MenuItem Header="_Open File" Click="OpenFile"/>
             <MenuItem Header="_Save File" Click="SaveFile"/>
+            <MenuItem Header="_Reset Image" Click="ResetImage"/>
         </Menu>
-        <ToolBar Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0">
-            <Button Content="Blur" Click="BlurClick" BorderBrush="LightGray" BorderThickness="0.5"/>
-            <Button Content="Sharpen" Click="SharpenClick" BorderBrush="LightGray" BorderThickness="0.5"/>
-            <Button Content="Invert" Click="InverseClick" BorderBrush="LightGray" BorderThickness="0.5"/>
-            <Button Content="Correct Brightness" Click="BrightnessCorrectionClick" BorderBrush="LightGray" BorderThickness="0.5"/>
-            <Button Content="Enhance Contrast" Click="ContrastEnhancementClick" BorderBrush="LightGray" BorderThickness="0.5"/>
-            <Button Content="Correct Gamma" Click="GammaCorrectionClick" BorderBrush="LightGray" BorderThickness="0.5"/>
+        <ToolBar Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0">
+            <Button Content="Blur" Click="BlurClick" 
+                    BorderBrush="LightGray" BorderThickness="0.5"/>
+            <Button Content="Sharpen" Click="SharpenClick" 
+                    BorderBrush="LightGray" BorderThickness="0.5"/>
+            <Button Content="Invert" Click="InverseClick" 
+                    BorderBrush="LightGray" BorderThickness="0.5"/>
+            <Button Content="Correct Brightness" Click="BrightnessCorrectionClick" 
+                    BorderBrush="LightGray" BorderThickness="0.5"/>
+            <Button Content="Enhance Contrast" Click="ContrastEnhancementClick" 
+                    BorderBrush="LightGray" BorderThickness="0.5"/>
+            <Button Content="Correct Gamma" Click="GammaCorrectionClick" 
+                    BorderBrush="LightGray" BorderThickness="0.5"/>
         </ToolBar>
+        <DataGrid Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Queue}" AutoGenerateColumns="False"
+                  AllowDrop="False" SelectedValue="{Binding SelectedEffect, Mode=OneWayToSource }">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Effect" Binding="{Binding Path=Name}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <Border Grid.Row="2" Grid.Column="1" BorderThickness="0.5" BorderBrush="LightGray">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <Image Source="{Binding Path=Original}" Margin="10" HorizontalAlignment="Left" Stretch="None"/>
+            <ScrollViewer Name="OriginalScroll" ScrollChanged="OnScroll" 
+                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <Image Name="OriginalImage" Source="{Binding Path=Original}" Margin="10" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Fill">
+                    <Image.Width>
+                        <MultiBinding Converter="{StaticResource ScaleConverter}">
+                            <Binding Path="Original.PixelWidth"/>
+                            <Binding Path="Scale"/>
+                        </MultiBinding>
+                    </Image.Width>
+                    <Image.Height>
+                        <MultiBinding Converter="{StaticResource ScaleConverter}">
+                            <Binding Path="Original.PixelHeight"/>
+                            <Binding Path="Scale"/>
+                        </MultiBinding>
+                    </Image.Height>
+                </Image>
             </ScrollViewer>
         </Border>
         <Border Grid.Row="2" Grid.Column="2" BorderThickness="0.5" BorderBrush="LightGray">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <Image Source="{Binding Path=Modified}" Margin="10" HorizontalAlignment="Left" Stretch="None"/>
+            <ScrollViewer Name="ModifiedScroll" ScrollChanged="OnScroll" 
+                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <Image Name="ModifiedImage" Source="{Binding Path=Modified}" Margin="10" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Fill">
+                    <Image.Width>
+                        <MultiBinding Converter="{StaticResource ScaleConverter}">
+                            <Binding Path="Modified.PixelWidth"/>
+                            <Binding Path="Scale"/>
+                        </MultiBinding>
+                    </Image.Width>
+                    <Image.Height>
+                        <MultiBinding Converter="{StaticResource ScaleConverter}">
+                            <Binding Path="Modified.PixelHeight"/>
+                            <Binding Path="Scale"/>
+                        </MultiBinding>
+                    </Image.Height>
+                </Image>
             </ScrollViewer>
         </Border>
+        <StackPanel Grid.Row="2" Grid.Column="3" Margin="5">
+            <TextBlock Text="Scale"/>
+            <TextBlock Text="{Binding Scale, StringFormat={}x0.00}"/>
+            <Slider  Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top"
+                     Margin="0 5" Minimum="0.5" Maximum="2.0" Value="{Binding Scale}" 
+                     Height="100"/>
+        </StackPanel>
     </Grid>
 </Window>

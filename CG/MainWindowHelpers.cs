@@ -17,7 +17,9 @@ public partial class MainWindow
             
         if (dialog.ShowDialog() != true)
             return;
-            
+        
+        Queue.Clear();
+        
         var file = new Uri(dialog.FileName);
         var image = new BitmapImage(file);
         Original = new WriteableBitmap(image);
@@ -39,5 +41,11 @@ public partial class MainWindow
         encoder.Frames.Add(BitmapFrame.Create(Modified));
         using var stream = File.Create(dialog.FileName);
         encoder.Save(stream);
+    }
+
+    private void ResetImage(object sender, RoutedEventArgs e)
+    {
+        Queue.Clear();
+        Modified = new WriteableBitmap(Original);
     }
 }
