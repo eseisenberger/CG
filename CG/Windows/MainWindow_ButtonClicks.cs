@@ -1,6 +1,4 @@
-﻿using CG.Windows;
-
-namespace CG;
+﻿namespace CG.Windows;
 
 public partial class MainWindow
 {
@@ -8,23 +6,23 @@ public partial class MainWindow
     {
         var effect = new FunctionalFilter(name, func);
         Queue.Insert(0, effect);
-        await ApplyNewest();
+        await ApplyPendingFilters();
     }
     
     #region FUNCTIONAL
     private async void InverseClick(object sender, RoutedEventArgs e)
     {
-        await ApplyFunctionalFilter("Invert", Inversion);
+        await ApplyFunctionalFilter("Invert", MainWindow.Inversion);
     }
 
     private async void BrightnessCorrectionClick(object sender, RoutedEventArgs e)
     {
-        await ApplyFunctionalFilter("Correct Brightness", BrightnessCorrection);
+        await ApplyFunctionalFilter("Correct Brightness", MainWindow.BrightnessCorrection);
     }
 
     private async void ContrastEnhancementClick(object sender, RoutedEventArgs e)
     {
-        await ApplyFunctionalFilter("Enhance Contrast", ContrastEnhancement);
+        await ApplyFunctionalFilter("Enhance Contrast", MainWindow.ContrastEnhancement);
     }
 
     private async void GammaCorrectionClick(object sender, RoutedEventArgs e)
@@ -45,7 +43,7 @@ public partial class MainWindow
         var windowData = window.Data;
         var filter = new ConvolutionalFilter(windowData);
         Queue.Insert(0, filter);
-        await ApplyNewest();
+        await ApplyPendingFilters();
     }
 
     private async void CustomFilterClick(object sender, RoutedEventArgs e)
@@ -108,15 +106,15 @@ public partial class MainWindow
 
 
     #region UTILITY
-    private void RemoveClick(object sender, RoutedEventArgs e)
+    private async void RemoveClick(object sender, RoutedEventArgs e)
     {
-        if (SelectedEffect is null)
+        if (SelectedEffect is null || SelectedEffect.State.Equals("In progress..."))
             return;
 
         Queue.Remove(SelectedEffect);
         SelectedEffect = null;
         
-        Refresh();
+        await Refresh();
     }
     #endregion
     

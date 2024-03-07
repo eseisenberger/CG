@@ -1,18 +1,18 @@
-﻿<Window x:Class="CG.MainWindow"
+﻿<Window x:Class="CG.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CG"
         xmlns:converters="clr-namespace:CG.Converters"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="MainWindow" MinHeight="450" MinWidth="900"
+        Title="CG App" MinHeight="450" MinWidth="900"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
         <converters:ScaleConverter x:Key="ScaleConverter"/>
         <converters:IsNotNullConverter x:Key="IsNotNullConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:FilterStateToStringConverter x:Key="FilterStateToStringConverter"/>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="5 0"/>
             <Setter Property="Padding" Value="5 0"/>
@@ -20,7 +20,7 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" MinWidth="160"/>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="Auto"/>
@@ -81,7 +81,7 @@
                        AllowDrop="False" SelectedValue="{Binding SelectedEffect, Mode=TwoWay }">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Effect" Binding="{Binding Path=Name}"/>
-                    <DataGridTextColumn Header="State" Binding="{Binding Path=State}"/>
+                    <DataGridTextColumn Header="State" Binding="{Binding Path=State, Converter={StaticResource FilterStateToStringConverter}}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Button Grid.Row="1" Content="Remove" Margin="5" Click="RemoveClick"

@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows.Interop;
-
+﻿
 namespace CG.Windows;
 
 public partial class ConvolutionalFilterWindow : Window, INotifyPropertyChanged

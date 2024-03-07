@@ -1,8 +1,10 @@
-﻿namespace CG.Interfaces;
+﻿using CG.Enums;
+
+namespace CG.Interfaces;
 
 public interface IFilter
 {
     string Name { get; set; }
-    string State { get; set; }
+    FilterState State { get; set; }
     Task Apply(WriteableBitmap source);
 }

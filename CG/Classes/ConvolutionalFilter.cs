@@ -2,10 +2,10 @@
 
 public class ConvolutionalFilter(ConvolutionalFilterData data) : IFilter, INotifyPropertyChanged
 {
-    private string _state = "Pending";
+    private FilterState _state = FilterState.Pending;
     public string Name { get; set; } = data.Name;
 
-    public string State
+    public FilterState State
     {
         get => _state;
         set => SetField(ref _state, value);

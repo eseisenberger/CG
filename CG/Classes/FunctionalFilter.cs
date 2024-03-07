@@ -4,10 +4,10 @@ namespace CG.Classes;
 
 public class FunctionalFilter(string name, Func<BitmapData, byte[]> func) : IFilter, INotifyPropertyChanged
 {
-    private string _state = "Pending";
+    private FilterState _state = FilterState.Pending;
     public string Name { get; set; } = name;
 
-    public string State
+    public FilterState State
     {
         get => _state;
         set => SetField(ref _state, value);
