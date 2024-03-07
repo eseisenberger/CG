@@ -2,6 +2,7 @@
 
 public interface IFilter
 {
-    public string Name { get; set; }
-    public void Apply(WriteableBitmap source);
+    string Name { get; set; }
+    string State { get; set; }
+    Task Apply(WriteableBitmap source);
 }

@@ -29,42 +29,6 @@ namespace CG
         private const double Gamma = 2.2;
         private const int ScrollRate = 10; //Scaling from 1 to 2 takes ScrollRate turns of the scroll wheel
 
-
-        private static readonly int[,] BlurKernel =
-        {
-            { 1, 1, 1 },
-            { 1, 1, 1 },
-            { 1, 1, 1 }
-        };
-        private static readonly int[,] SharpeningKernel =
-        {
-            { 0, -1, 0 },
-            { -1, 5, -1 },
-            { 0, -1, 0 }
-        };
-        private static readonly int[,] GaussianBlurKernel =
-        {
-            { 1, 2, 1 },
-            { 2, 4, 2 },
-            { 1, 2, 1 }
-        };
-
-        private const int GaussianBlurDivisor = 16;
-        
-        private static readonly int[,] EmbossingKernel =
-        {
-            { -2, -1,  0 },
-            { -1,  1,  1 },
-            {  0,  1,  2 }
-        };
-
-        private static readonly int[,] EdgeDetectionKernel =
-        {
-            { -1, -1, -1 },
-            { -1, 8, -1 },
-            { -1, -1, -1 }
-        };
-
         private byte[] GammaCorrectionTable { get; } = new byte[256];
         public ObservableCollection<IFilter> Queue { get; set; } = [];
 
@@ -72,6 +36,14 @@ namespace CG
         private WriteableBitmap _modified;
         private IFilter? _selectedEffect;
         private double _scale = 1.0;
+        private bool _isApplying;
+
+
+        public bool IsApplying
+        {
+            get => _isApplying;
+            set => SetField(ref _isApplying, value);
+        }
 
         public WriteableBitmap Original
         {
@@ -126,10 +98,17 @@ namespace CG
                 GammaCorrectionTable[i] = (byte)(255 * Math.Pow(i / 255.0, 1.0 / Gamma));
         }
 
-        private void ApplyNewest()
+        private async Task ApplyNewest()
         {
-            var effect = Queue.FirstOrDefault();
-            effect?.Apply(Modified);
+            var filter = Queue.FirstOrDefault();
+            if (filter is null)
+                return;
+
+            filter.State = "In progress...";
+            IsApplying = true;
+            await filter.Apply(Modified);
+            IsApplying = false;
+            filter.State = "Applied";
         }
         
         private void Refresh()

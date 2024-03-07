@@ -2,34 +2,26 @@
 
 public partial class MainWindow
 {
-    private static void Inversion(WriteableBitmap source)
+    private static byte[] Inversion(BitmapData img)
     {
-        var pixels = source.GetPixels();
-        var result = pixels.Select(p => (byte)(255 - p)).ToArray();
-        source.WritePixels(result);
+        return img.Pixels.Select(p => (byte)(255 - p)).ToArray();
     }
 
-    private static void BrightnessCorrection(WriteableBitmap source)
+    private static byte[] BrightnessCorrection(BitmapData img)
     {
-        var pixels = source.GetPixels();
-        var result = pixels.Select(p => (byte)int.Clamp(p + Brightness, 0, 255)).ToArray();
-        source.WritePixels(result);
+        return img.Pixels.Select(p => (byte)int.Clamp(p + Brightness, 0, 255)).ToArray();
     }
 
-    private static void ContrastEnhancement(WriteableBitmap source)
+    private static byte[] ContrastEnhancement(BitmapData img)
     {
         var contrast = Math.Pow((100 + Contrast) / 100.0, 2);
-        var pixels = source.GetPixels();
-        var result = pixels.Select(p => 
+        return img.Pixels.Select(p => 
             (byte)int.Clamp((int)((p / 255.0 - 0.5) * contrast + 0.5) * 255, 0, 255)
         ).ToArray();
-        source.WritePixels(result);
     }
 
-    private void GammaCorrection(WriteableBitmap source)
+    private byte[] GammaCorrection(BitmapData img)
     {
-        var pixels = source.GetPixels();
-        var result = pixels.Select(p => GammaCorrectionTable[p]).ToArray();
-        source.WritePixels(result);
+        return img.Pixels.Select(p => GammaCorrectionTable[p]).ToArray();
     }
 }

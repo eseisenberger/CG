@@ -24,3 +24,6 @@ C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\Controls\KernelGrid.g.cs
 C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\Windows\ConvolutionalFilterWindow.g.cs
 C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\Controls\KernelGrid.baml
 C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\Windows\ConvolutionalFilterWindow.baml
+C:\Users\es\source\repos\CG\CG\bin\Debug\net8.0-windows\FontAwesome.WPF.dll
+C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\CG.csproj.AssemblyReference.cache
+C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\CG.csproj.Up2Date
