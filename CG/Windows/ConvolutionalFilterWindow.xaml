@@ -8,7 +8,7 @@
         xmlns:wrappers="clr-namespace:CG.Converters.Wrappers"
         xmlns:converters="clr-namespace:CG.Converters"
         mc:Ignorable="d"
-        Title="{Binding Data.Name}" Height="400" Width="600"
+        Title="{Binding Data.Name}" Height="400" Width="650"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -70,6 +70,11 @@
                         <TextBox Text="{Binding Data.OffsetX}" TextChanged="OffsetXChanged"/>
                     </StackPanel>
                 </GroupBox>
+            </ToolBar>
+            <ToolBar>
+                <CheckBox Content="R" IsChecked="{Binding Data.IgnoreChannels[0]}"/>
+                <CheckBox Content="G" IsChecked="{Binding Data.IgnoreChannels[1]}"/>
+                <CheckBox Content="B" IsChecked="{Binding Data.IgnoreChannels[2]}"/>
             </ToolBar>
         </ToolBarTray>
         <!-- KERNEL -->

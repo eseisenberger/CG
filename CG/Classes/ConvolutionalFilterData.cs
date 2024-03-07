@@ -67,7 +67,7 @@ public class ConvolutionalFilterData : INotifyPropertyChanged
     public int Offset { get; set; }
     public int OffsetX { get; set; }
     public int OffsetY { get; set; }
-    
+    public bool[] IgnoreChannels { get; set; } = new bool[3];
     [JsonIgnore]
     public Func<int, int, (int[,], int)> KernelGenerator { get; set; }
 

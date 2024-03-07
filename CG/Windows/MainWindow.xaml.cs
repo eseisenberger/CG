@@ -27,12 +27,26 @@ public partial class MainWindow : INotifyPropertyChanged
     private IFilter? _selectedEffect;
     private double _scale = 1.0;
     private bool _isApplying;
+    private int _totalPixels;
+    private int _currentPixel;
 
 
     public bool IsApplying
     {
         get => _isApplying;
         set => SetField(ref _isApplying, value);
+    }
+
+    public int CurrentPixel
+    {
+        get => _currentPixel;
+        set => SetField(ref _currentPixel, value);
+    }
+
+    public int TotalPixels
+    {
+        get => _totalPixels;
+        set => SetField(ref _totalPixels, value);
     }
 
     public WriteableBitmap Original
@@ -57,6 +71,8 @@ public partial class MainWindow : INotifyPropertyChanged
         get => _scale;
         set => SetField(ref _scale, value);
     }
+
+    public bool[] IgnoreChannels { get; set; } = new bool[3];
 
     public MainWindow()
     {
@@ -143,5 +159,21 @@ public partial class MainWindow : INotifyPropertyChanged
             
         ModifiedScroll.ScrollToVerticalOffset(e.VerticalOffset);
         ModifiedScroll.ScrollToHorizontalOffset(e.HorizontalOffset);
+    }
+
+    private void HsvClick(object sender, RoutedEventArgs e)
+    {
+        var source = Modified;
+        var pixels = source.GetPixels();
+        pixels.ToHsv();
+        source.WritePixels(pixels);
+    }
+
+    private void RgbClick(object sender, RoutedEventArgs e)
+    {
+        var source = Modified;
+        var pixels = source.GetPixels();
+        pixels.ToRgb();
+        source.WritePixels(pixels);
     }
 }

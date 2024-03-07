@@ -68,8 +68,14 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </GroupBox>
+                <GroupBox Header="Color Conversion">
+                    <StackPanel>
+                        <Button Content="HSV" Click="HsvClick"/>
+                        <Button Content="RGB" Click="RgbClick"/>
+                    </StackPanel>
+                </GroupBox>
                 <fa:ImageAwesome Icon="Refresh" Spin="True" Height="20" Width="20" 
-                                 Visibility="{Binding IsApplying, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                 Visibility="{Binding IsApplying, Converter={StaticResource BoolToVisibilityConverter}}"/>
             </StackPanel>
         </ToolBar>
         <Grid Grid.Row="2" Grid.Column="0">

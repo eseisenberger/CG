@@ -9,6 +9,8 @@ public static class ConvolutionalFilters
     {
         await Parallel.ForAsync(0, 3, (channel, token) =>
         {
+            if (data.IgnoreChannels[channel])
+                return ValueTask.CompletedTask;
             for (var y = 0; y < img.Height; y++)
             for (var x = 0; x < img.Width; x++)
             {
