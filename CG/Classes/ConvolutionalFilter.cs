@@ -1,4 +1,8 @@
-﻿namespace CG.Classes;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace CG.Classes;
 
 public class ConvolutionalFilter(ConvolutionalFilterData data) : IFilter, INotifyPropertyChanged
 {

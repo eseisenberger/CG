@@ -1,4 +1,5 @@
-﻿using CG.Enums;
+﻿using System.Threading.Tasks;
+using CG.Enums;
 
 namespace CG.Interfaces;
 

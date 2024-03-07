@@ -1,4 +1,7 @@
-﻿namespace CG.Controls;
+﻿using System;
+using System.Collections.Generic;
+
+namespace CG.Controls;
 
 public partial class KernelGrid : UserControl, INotifyPropertyChanged
 {

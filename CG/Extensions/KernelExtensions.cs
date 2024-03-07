@@ -1,4 +1,6 @@
-﻿namespace CG.Extensions;
+﻿using System;
+
+namespace CG.Extensions;
 
 public static class KernelExtensions
 {

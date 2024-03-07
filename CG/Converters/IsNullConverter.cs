@@ -1,4 +1,6 @@
-﻿namespace CG.Converters;
+﻿using System;
+
+namespace CG.Converters;
 
 public class IsNotNullConverter : IValueConverter
 {

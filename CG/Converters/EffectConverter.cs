@@ -1,4 +1,6 @@
-﻿namespace CG.Converters;
+﻿using System;
+
+namespace CG.Converters;
 
 [ValueConversion(typeof(FunctionalFilter), typeof(string))]
 public class EffectConverter : IValueConverter

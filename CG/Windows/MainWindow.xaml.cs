@@ -1,4 +1,9 @@
-﻿namespace CG.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace CG.Windows;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml

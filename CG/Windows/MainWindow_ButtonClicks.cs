@@ -1,4 +1,7 @@
-﻿namespace CG.Windows;
+﻿using System;
+using System.Threading.Tasks;
+
+namespace CG.Windows;
 
 public partial class MainWindow
 {

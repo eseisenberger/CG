@@ -1,4 +1,7 @@
-﻿namespace CG.Filters;
+﻿using System;
+using System.Threading.Tasks;
+
+namespace CG.Filters;
 
 public static class ConvolutionalFilters
 {

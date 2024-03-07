@@ -1,4 +1,7 @@
-﻿namespace CG.Windows;
+﻿using System;
+using System.Linq;
+
+namespace CG.Windows;
 
 public partial class ConvolutionalFilterWindow
 {

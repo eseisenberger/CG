@@ -1,4 +1,7 @@
 ﻿
+using System;
+using System.Collections.Generic;
+
 namespace CG.Windows;
 
 public partial class ConvolutionalFilterWindow : Window, INotifyPropertyChanged
