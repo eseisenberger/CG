@@ -19,3 +19,8 @@ C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\CG.pdb
 C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\CG.genruntimeconfig.cache
 C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\ref\CG.dll
 C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\CG.sourcelink.json
+C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\Controls\KernelGrid.g.cs
+C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\Windows\ConvolutionalFilterWindow.g.cs
+C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\Controls\KernelGrid.baml
+C:\Users\es\source\repos\CG\CG\obj\Debug\net8.0-windows\Windows\ConvolutionalFilterWindow.baml

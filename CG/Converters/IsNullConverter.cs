@@ -1,12 +1,10 @@
 ﻿namespace CG.Converters;
 
-[ValueConversion(typeof(FunctionalFilter), typeof(string))]
-public class EffectConverter : IValueConverter
+public class IsNotNullConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        var effect = (FunctionalFilter?)value;
-        return effect is null ? string.Empty : effect.Name;
+        return value is not null;
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

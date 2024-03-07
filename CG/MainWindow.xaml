@@ -5,12 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CG"
         xmlns:converters="clr-namespace:CG.Converters"
+        xmlns:wrappers="clr-namespace:CG.Converters.Wrappers"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" MinHeight="450" MinWidth="900"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
-        <converters:EffectConverter x:Key="ActionConverter"/>
         <converters:ScaleConverter x:Key="ScaleConverter"/>
+        <converters:IsNotNullConverter x:Key="IsNotNullConverter"/>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5 0"/>
+            <Setter Property="Padding" Value="5 0"/>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -30,25 +35,41 @@
             <MenuItem Header="_Reset Image" Click="ResetImage"/>
         </Menu>
         <ToolBar Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0">
-            <Button Content="Blur" Click="BlurClick" 
-                    BorderBrush="LightGray" BorderThickness="0.5"/>
-            <Button Content="Sharpen" Click="SharpenClick" 
-                    BorderBrush="LightGray" BorderThickness="0.5"/>
-            <Button Content="Invert" Click="InverseClick" 
-                    BorderBrush="LightGray" BorderThickness="0.5"/>
-            <Button Content="Correct Brightness" Click="BrightnessCorrectionClick" 
-                    BorderBrush="LightGray" BorderThickness="0.5"/>
-            <Button Content="Enhance Contrast" Click="ContrastEnhancementClick" 
-                    BorderBrush="LightGray" BorderThickness="0.5"/>
-            <Button Content="Correct Gamma" Click="GammaCorrectionClick" 
-                    BorderBrush="LightGray" BorderThickness="0.5"/>
+            <StackPanel Orientation="Horizontal">
+                <GroupBox Header="Functional Filters">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Invert" Click="InverseClick" />
+                        <Button Content="Correct Brightness" Click="BrightnessCorrectionClick" />
+                        <Button Content="Enhance Contrast" Click="ContrastEnhancementClick" />
+                        <Button Content="Correct Gamma" Click="GammaCorrectionClick" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Convolutional Filters">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Blur..." Click="BlurClick" />
+                        <Button Content="Sharpen..." Click="SharpenClick" />
+                        <Button Content="Gaussian Blur..." Click="GaussianBlurClick" />
+                        <Button Content="Emboss..." Click="EmbossClick" />
+                        <Button Content="Detect Edges..." Click="EdgeDetectionClick" />
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
         </ToolBar>
-        <DataGrid Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Queue}" AutoGenerateColumns="False"
-                  AllowDrop="False" SelectedValue="{Binding SelectedEffect, Mode=OneWayToSource }">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Effect" Binding="{Binding Path=Name}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid Grid.Row="2" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <DataGrid  ItemsSource="{Binding Queue}" AutoGenerateColumns="False"
+                       AllowDrop="False" SelectedValue="{Binding SelectedEffect, Mode=TwoWay }">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Effect" Binding="{Binding Path=Name}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Grid.Row="1" Content="Remove" Margin="5" Click="RemoveClick"
+                    IsEnabled="{Binding SelectedEffect, Converter={StaticResource IsNotNullConverter}}"/>
+        </Grid>
+        
         <Border Grid.Row="2" Grid.Column="1" BorderThickness="0.5" BorderBrush="LightGray">
             <ScrollViewer Name="OriginalScroll" ScrollChanged="OnScroll" 
                           VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">

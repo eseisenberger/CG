@@ -2,6 +2,11 @@
 
 public static class BitmapExtensions
 {
+    public static BitmapData GetData(this BitmapSource source)
+    {
+        return new BitmapData(source);
+    }
+    
     public static byte[] GetPixels(this BitmapSource source)
     {
         var height = source.PixelHeight;
