@@ -1,6 +1,6 @@
 ﻿namespace CG.Classes;
 
-public class ConvolutionalFilter(ConvolutionalFilterData data, Func<BitmapData, ConvolutionalFilterData, Task<byte[]>> func) : IFilter, INotifyPropertyChanged
+public class ConvolutionalFilter(ConvolutionalFilterData data) : IFilter, INotifyPropertyChanged
 {
     private string _state = "Pending";
     public string Name { get; set; } = data.Name;
@@ -12,7 +12,7 @@ public class ConvolutionalFilter(ConvolutionalFilterData data, Func<BitmapData, 
     }
 
     private ConvolutionalFilterData Data { get; set; } = data;
-    private Func<BitmapData, ConvolutionalFilterData, Task<byte[]>> Func { get; set; } = func;
+    private Func<BitmapData, ConvolutionalFilterData, Task<byte[]>> Func { get; } = ConvolutionalFilters.GetPixels;
     public async Task Apply(WriteableBitmap source)
     {
         var img = source.GetData();

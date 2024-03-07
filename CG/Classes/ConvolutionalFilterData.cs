@@ -1,22 +1,60 @@
-﻿namespace CG.Classes;
+﻿using Newtonsoft.Json;
+
+namespace CG.Classes;
 
 public class ConvolutionalFilterData : INotifyPropertyChanged
 {
     private int _divisor;
 
-    public ConvolutionalFilterData(string name, Func<int, int, (int[,], int)> kernelGenerator, int offset = 0, int offsetX = 0, int offsetY = 0, bool divisorEnabled = false, bool autoCalculateDivisor = false)
+    public ConvolutionalFilterData(ConvolutionalFilterData other)
+    {
+        Name = other.Name;
+        Offset = other.Offset;
+        OffsetX = other.OffsetX;
+        OffsetY = other.OffsetY;
+        KernelGenerator = other.KernelGenerator;
+        Kernel = other.Kernel.GetCopy();
+        Divisor = other.Divisor;
+    }
+    
+    
+    public ConvolutionalFilterData(string name, Func<int, int, (int[,], int)> kernelGenerator, int offset = 0, int offsetX = 0, int offsetY = 0)
     {
         Name = name;
         Offset = offset;
         OffsetX = offsetX;
         OffsetY = offsetY;
-        DivisorEnabled = divisorEnabled;
-        AutoCalculateDivisor = autoCalculateDivisor;
         KernelGenerator = kernelGenerator;
         (Kernel, Divisor) = kernelGenerator.Invoke(3, 3);
     }
+    
+    [JsonConstructor]
+    public ConvolutionalFilterData(string name, Dictionary<(int, int), int[,]> savedKernels, int[,] kernel, int divisor, int offset = 0, int offsetX = 0, int offsetY = 0)
+    {
+        Name = name;
+        Offset = offset;
+        OffsetX = offsetX;
+        OffsetY = offsetY;
+        Kernel = kernel;
+        if(savedKernels is not null)
+            SavedKernels = savedKernels;
+        if(!SavedKernels.ContainsKey((kernel.Height(), kernel.Width())))
+            SavedKernels.Add((kernel.Height(), kernel.Width()), Kernel);
+        Divisor = divisor;
+        KernelGenerator = DefaultGenerator;
+    }
+
+    private (int[,], int) DefaultGenerator(int height, int width)
+    {
+        var key = (height, width);
+        var divisor = Divisor;
+        var kernel = SavedKernels.ContainsKey(key) ? SavedKernels[key] : GetIdentityKernel(height, width);
+        return (kernel, divisor);
+    }
+
     public string Name { get; set; }
     public int[,] Kernel { get; set; }
+    public Dictionary<(int, int), int[,]> SavedKernels { get; set; } = [];
 
     public int Divisor
     {
@@ -27,12 +65,18 @@ public class ConvolutionalFilterData : INotifyPropertyChanged
     public int Offset { get; set; }
     public int OffsetX { get; set; }
     public int OffsetY { get; set; }
-    public bool DivisorEnabled { get; set; }
-    public bool AutoCalculateDivisor { get; set; }
+    
+    [JsonIgnore]
     public Func<int, int, (int[,], int)> KernelGenerator { get; set; }
-    
-    
-    public bool IsBlur => DivisorEnabled && AutoCalculateDivisor;
+
+
+    private static int[,] GetIdentityKernel(int height, int width)
+    {
+        var kernel = new int[height, width];
+        kernel.Fill(0);
+        kernel.SetCenter(1);
+        return kernel;
+    }
     
     public event PropertyChangedEventHandler? PropertyChanged;
 

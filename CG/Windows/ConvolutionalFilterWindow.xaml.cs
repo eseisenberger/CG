@@ -7,7 +7,8 @@ public partial class ConvolutionalFilterWindow : Window, INotifyPropertyChanged
 {
     private ConvolutionalFilterData _data;
     private const int MaxSize = 9;
-
+    private const string FileTypeFilter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+    private string CustomFiltersLocation { get; }
     #region SHADY STACKOVERFLOW CODE
     private const int GWL_STYLE = -16;
     private const int WS_SYSMENU = 0x80000;
@@ -24,15 +25,17 @@ public partial class ConvolutionalFilterWindow : Window, INotifyPropertyChanged
     #endregion
     
     
-    public ConvolutionalFilterWindow(ConvolutionalFilterData data)
+    public ConvolutionalFilterWindow(ConvolutionalFilterData data, string customFiltersLocation, MainWindow parent)
     {
         Loaded += OnLoaded;
+        Parent = parent;
+        CustomFiltersLocation = customFiltersLocation;
         Data = data;
         KernelItems = GetKernelItems(data.Kernel);
         InitializeComponent();
     }
 
-
+    private new MainWindow Parent { get; set; }
     private ObservableCollection<KernelItem> GetKernelItems(int[,] kernel)
     {
         var width = Data.Kernel.Width();
@@ -96,7 +99,24 @@ public partial class ConvolutionalFilterWindow : Window, INotifyPropertyChanged
 
     private void SaveClick(object sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        var data = new ConvolutionalFilterData(Data);
+        
+        SaveFileDialog dialog = new()
+        {
+            Filter = FileTypeFilter,
+            FileName = "CustomFilter",
+            InitialDirectory = Path.GetFullPath(CustomFiltersLocation),
+            DefaultExt = ".json"
+        };
+        if (dialog.ShowDialog() == false)
+            return;
+        var name = Path.GetFileNameWithoutExtension(dialog.FileName);
+        data.Name = name;
+        var json = data.ToJson();
+        using var sw = new StreamWriter(dialog.FileName);
+        sw.Write(json);
+        sw.Close();
+        Parent.LoadCustomFilters();
     }
 
     private void ApplyClick(object sender, RoutedEventArgs e)

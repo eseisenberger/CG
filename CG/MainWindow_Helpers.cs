@@ -48,4 +48,21 @@ public partial class MainWindow
         Queue.Clear();
         Modified = new WriteableBitmap(Original);
     }
+
+    public void LoadCustomFilters()
+    {
+        CustomFilters.Clear(); 
+        var files = Directory.EnumerateFiles(CustomFiltersLocation).Where(f => Path.GetExtension(f).Equals(".json"));
+        foreach (var file in files)
+        {
+            using var stream = File.OpenRead(file);
+            using var sr = new StreamReader(stream);
+            var json = sr.ReadToEnd();
+            var data = FilterExtensions.GetFilterData(json);
+            if (data is null)
+                continue;
+            CustomFilters.Add(data);
+        }
+    }
+    
 }

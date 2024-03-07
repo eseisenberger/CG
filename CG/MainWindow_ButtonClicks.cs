@@ -37,15 +37,24 @@ public partial class MainWindow
 
     private async Task ApplyConvolutionalFilter(ConvolutionalFilterData data)
     {
-        var window = new ConvolutionalFilterWindow(data); 
+        var window = new ConvolutionalFilterWindow(new ConvolutionalFilterData(data), CustomFiltersLocation, this); 
         var dialogResult = window.ShowDialog();
         if (dialogResult != true)
             return;
         
         var windowData = window.Data;
-        var filter = new ConvolutionalFilter(windowData, ConvolutionalFilters.GetPixels);
+        var filter = new ConvolutionalFilter(windowData);
         Queue.Insert(0, filter);
         await ApplyNewest();
+    }
+
+    private async void CustomFilterClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button button)
+            return;
+        if (button.Tag is not ConvolutionalFilterData data)
+            return;
+        await ApplyConvolutionalFilter(data);
     }
     
     private async void BlurClick(object sender, RoutedEventArgs e)
@@ -53,9 +62,7 @@ public partial class MainWindow
         var data = new ConvolutionalFilterData
         (
             name: "Blur", 
-            kernelGenerator: ConvolutionalFilters.MakeBlurKernel,
-            divisorEnabled: true, 
-            autoCalculateDivisor: true
+            kernelGenerator: ConvolutionalFilters.MakeBlurKernel
         );
         await ApplyConvolutionalFilter(data); 
     }
@@ -73,9 +80,7 @@ public partial class MainWindow
         var data = new ConvolutionalFilterData
         (
             name: "Gaussian Blur",
-            kernelGenerator: ConvolutionalFilters.MakeGaussKernel,
-            divisorEnabled: true, 
-            autoCalculateDivisor: false
+            kernelGenerator: ConvolutionalFilters.MakeGaussKernel
         );
         await ApplyConvolutionalFilter(data); 
     }

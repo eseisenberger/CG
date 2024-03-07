@@ -23,6 +23,7 @@ namespace CG
     {
         private const string FileTypeFilter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg|All files (*.*)|*.*";
         private const string DefaultImageSource = @"..\..\..\Resources\default.png";
+        private const string CustomFiltersLocation = @"..\..\..\Resources\CustomFilters";
 
         private const int Brightness = 20;
         private const int Contrast = 20;
@@ -31,7 +32,7 @@ namespace CG
 
         private byte[] GammaCorrectionTable { get; } = new byte[256];
         public ObservableCollection<IFilter> Queue { get; set; } = [];
-
+        public ObservableCollection<ConvolutionalFilterData> CustomFilters { get; set; } = [];
         private WriteableBitmap _original;
         private WriteableBitmap _modified;
         private IFilter? _selectedEffect;
@@ -74,6 +75,8 @@ namespace CG
             InitializeSampleImages();
             InitializeGammaTable();
             InitializeComponent();
+            Directory.CreateDirectory(CustomFiltersLocation);
+            LoadCustomFilters();
         }
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e)

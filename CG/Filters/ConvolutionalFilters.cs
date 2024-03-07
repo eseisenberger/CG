@@ -84,7 +84,6 @@ public static class ConvolutionalFilters
     
     public static (int[,] Kernel, int Divisor) MakeGaussKernel(int height, int width)
     {
-
         var sigma = 4.0;
         var radiusX = (width - 1) / 2;
         var radiusY = (height - 1) / 2;

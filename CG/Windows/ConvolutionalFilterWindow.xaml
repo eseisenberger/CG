@@ -55,8 +55,7 @@
                 <GroupBox Header="Data">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Divisor: "/>
-                        <TextBox Text="{Binding Data.Divisor}" TextChanged="DivisorChanged"
-                                 IsEnabled="{Binding Data.DivisorEnabled}"/>
+                        <TextBox Text="{Binding Data.Divisor}" TextChanged="DivisorChanged"/>
                         <Label Content="Offset: "/>
                         <TextBox Text="{Binding Data.Offset}" TextChanged="OffsetChanged"/>
                     </StackPanel>

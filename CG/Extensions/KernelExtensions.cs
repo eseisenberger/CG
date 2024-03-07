@@ -49,4 +49,11 @@ public static class KernelExtensions
 
     public static int Height(this int[,] kernel) => kernel.GetLength(0);
     public static int Width(this int[,] kernel) => kernel.GetLength(1);
+
+    public static int[,] GetCopy(this int[,] kernel)
+    {
+        var copy = new int[kernel.Height(), kernel.Width()];
+        Array.Copy(kernel, copy, kernel.Length);
+        return copy;
+    }
 }
