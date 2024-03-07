@@ -22,7 +22,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="obj\Debug\net8.0-windows\Controls\" />
+    <Folder Include="obj\Debug\net8.0-windows\Windows\" />
     <Folder Include="Resources\CustomFilters\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\CustomFilters\cusrom.json" />
   </ItemGroup>
 
 </Project>
